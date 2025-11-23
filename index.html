@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>BulSU Document Tracker</title>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="icon" href="bulsuLogo.png" type="image/png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  </head>
+  <body>
+    <!-- Login Overlay -->
+    <div id="authOverlay" class="overlay">
+      <div class="overlay-card">
+        <div class="login-header">
+          <img src="bulsuLogo.png" alt="BulSU Logo" class="login-logo" />
+          <h2>Office Login</h2>
+          <p class="login-subtitle">Access BulSU Document Tracker</p>
+        </div>
+        <form id="loginForm">
+          <div class="form-group">
+            <label for="loginUser">Username</label>
+            <input
+              id="loginUser"
+              name="username"
+              type="text"
+              autocomplete="username"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label for="loginPass">Password</label>
+            <input
+              id="loginPass"
+              name="password"
+              type="password"
+              autocomplete="current-password"
+              required
+            />
+          </div>
+          <div class="form-actions">
+            <button type="submit" class="btn-primary btn-full">
+              <span class="btn-text">Login</span>
+              <span class="btn-loader" style="display:none;">●●●</span>
+            </button>
+          </div>
+          <div id="loginMsg" class="msg"></div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Main Application -->
+    <div id="mainApp" style="display: none;">
+      <header>
+        <div class="header-content">
+          <div class="header-left">
+            <img src="bulsuLogo.png" alt="BulSU Logo" class="header-logo" />
+            <h2 class="header-title">BulSU Document Tracker</h2>
+          </div>
+          <div class="header-right">
+            <span class="user-badge" id="userBadge"></span>
+            <button class="btn-logout" id="logoutBtn">Logout</button>
+          </div>
+        </div>
+        <nav class="nav-tabs">
+          <button class="tab-btn active" data-tab="send">
+            <span class="tab-icon">📤</span>
+            <span class="tab-label">Send</span>
+          </button>
+          <button class="tab-btn" data-tab="receive">
+            <span class="tab-icon">📥</span>
+            <span class="tab-label">Receive</span>
+          </button>
+          <button class="tab-btn" data-tab="track">
+            <span class="tab-icon">🔍</span>
+            <span class="tab-label">Track</span>
+          </button>
+          <button class="tab-btn" data-tab="about">
+            <span class="tab-icon">ℹ️</span>
+            <span class="tab-label">About</span>
+          </button>
+        </nav>
+      </header>
+
+      <main>
+        <!-- Send Documents Tab -->
+        <section id="send" class="tab active">
+          <div class="tab-content">
+            <h1 class="section-title">Send Documents</h1>
+            <form id="portalForm-send" class="portal-form">
+              <div class="form-group">
+                <label for="sendDocName">Document Name / Nature of Communication</label>
+                <input type="text" id="sendDocName" name="docName" required />
+              </div>
+
+              <div class="form-group">
+                <label for="sendReferringTo">Referring To</label>
+                <input type="text" id="sendReferringTo" name="referringTo" />
+              </div>
+
+              <div class="form-group">
+                <label>Type of Communication</label>
+                <div class="radio-group">
+                  <label class="radio-label">
+                    <input type="radio" name="sendDocType" value="Internal Communication" required />
+                    <span>Internal</span>
+                  </label>
+                  <label class="radio-label">
+                    <input type="radio" name="sendDocType" value="External Communication" />
+                    <span>External</span>
+                  </label>
+                </div>
+              </div>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="sourceUsernameSend">Source Office Name</label>
+                  <input type="text" id="sourceUsernameSend" name="sourceUsername" required />
+                </div>
+                <div class="form-group">
+                  <label for="sourcePasswordSend">Source Office Password</label>
+                  <input type="password" id="sourcePasswordSend" name="sourcePassword" required />
+                </div>
+              </div>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="receiverUsernameSend">Receiving Office Name</label>
+                  <input type="text" id="receiverUsernameSend" name="receiverUsername" required />
+                </div>
+                <div class="form-group">
+                  <label for="receiverPasswordSend">Receiving Office Password</label>
+                  <input type="password" id="receiverPasswordSend" name="receiverPassword" required />
+                </div>
+              </div>
+
+              <input type="hidden" id="docTagInput" name="docTag" />
+
+              <div class="form-actions-group">
+                <button type="button" class="btn-primary" id="generateBtn">Generate Tag & QR</button>
+                <button type="button" class="btn-secondary" id="resetSendBtn">Reset</button>
+                <button type="submit" class="btn-primary" id="sendSubmitBtn">Submit</button>
+              </div>
+
+              <div id="generatedArea" class="generated-area" style="display: none;">
+                <div class="qr-section">
+                  <img id="qrImage" alt="QR Code" class="qr-image" />
+                  <small>Scan to open document tag</small>
+                </div>
+                <div class="tag-section">
+                  <label>Document Tag</label>
+                  <div id="docTag" class="doc-tag"></div>
+                  <div class="tag-actions">
+                    <button type="button" class="btn-secondary btn-sm" id="copyTagBtn">Copy Tag</button>
+                    <button type="button" class="btn-secondary btn-sm" id="printQrBtn">Print QR</button>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+        </section>
+
+        <!-- Receive Documents Tab -->
+        <section id="receive" class="tab">
+          <div class="tab-content">
+            <h1 class="section-title">Receive Documents</h1>
+            <form id="portalForm-receive" class="portal-form">
+              <div class="form-group">
+                <label for="receiveDocName">Document Name / Nature of Communication</label>
+                <input type="text" id="receiveDocName" name="docName" required />
+              </div>
+
+              <div class="form-group">
+                <label for="receiveReferringTo">Referring To</label>
+                <input type="text" id="receiveReferringTo" name="referringTo" />
+              </div>
+
+              <div class="form-group">
+                <label>Type of Communication</label>
+                <div class="radio-group">
+                  <label class="radio-label">
+                    <input type="radio" name="docType" value="Internal Communication" required />
+                    <span>Internal</span>
+                  </label>
+                  <label class="radio-label">
+                    <input type="radio" name="docType" value="External Communication" />
+                    <span>External</span>
+                  </label>
+                </div>
+              </div>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="sourceUsernameReceive">Source Office Name</label>
+                  <input type="text" id="sourceUsernameReceive" name="sourceUsername" required />
+                </div>
+                <div class="form-group">
+                  <label for="sourcePasswordReceive">Source Office Password</label>
+                  <input type="password" id="sourcePasswordReceive" name="sourcePassword" required />
+                </div>
+              </div>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="receiverUsername">Receiving Office Name</label>
+                  <input type="text" id="receiverUsername" name="receiverUsername" required />
+                </div>
+                <div class="form-group">
+                  <label for="receiverPassword">Receiving Office Password</label>
+                  <input type="password" id="receiverPassword" name="receiverPassword" required />
+                </div>
+              </div>
+              
+              <div class="form-actions">
+                <button type="submit" class="btn-primary btn-full">Submit</button>
+              </div>
+            </form>
+          </div>
+        </section>
+
+        <!-- Track Documents Tab -->
+        <section id="track" class="tab">
+          <div class="tab-content">
+            <h1 class="section-title">Track Documents</h1>
+            <form id="portalForm-track" class="portal-form">
+              <div class="form-group">
+                <label for="username">Office Username</label>
+                <input type="text" id="username" name="username" required />
+              </div>
+              <div class="form-group">
+                <label for="password">Office Password</label>
+                <input type="password" id="password" name="password" required />
+              </div>
+              <div class="form-group">
+                <label for="fileID">Unique File ID</label>
+                <input type="text" id="fileID" name="fileID" required />
+              </div>
+              <div class="form-actions">
+                <button type="submit" class="btn-primary btn-full">Track</button>
+              </div>
+            </form>
+          </div>
+        </section>
+
+        <!-- About Tab -->
+        <section id="about" class="tab">
+          <div class="tab-content about-content">
+            <h1 class="section-title">About the Developer</h1>
+            <img src="dom.png" class="developer-image" alt="Developer Photo" />
+            <h2>Full-Stack Developer</h2>
+            <p>
+              Developed by Larence Dominic T. Sto. Tomas, in compliance to
+              Elective 1.
+            </p>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast"></div>
+
+    <script src="app.js"></script>
+  </body>
+</html>
