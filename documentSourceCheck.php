@@ -5,7 +5,7 @@ header('Content-Type: application/json');
 
 // establish mysql connection
 $host = "sql100.infinityfree.com";
-$db   = "if0_39606867_bulsu_docu_tracker";
+$db   = "if0_39606867_bulsu_docu_tracker_v2";
 $user = "if0_39606867";
 $pass = "JsfJmMbmffxwzYV";
 

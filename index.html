@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <title>BulSU Document Tracker</title>
-    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="style.css?v=2" />
     <link rel="icon" href="bulsuLogo.png" type="image/png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   </head>
@@ -101,11 +101,11 @@
                 <label>Type of Communication</label>
                 <div class="radio-group">
                   <label class="radio-label">
-                    <input type="radio" name="sendDocType" value="Internal Communication" required />
+                    <input type="radio" name="docType" value="Internal Communication" required />
                     <span>Internal</span>
                   </label>
                   <label class="radio-label">
-                    <input type="radio" name="sendDocType" value="External Communication" />
+                    <input type="radio" name="docType" value="External Communication" />
                     <span>External</span>
                   </label>
                 </div>
@@ -259,6 +259,6 @@
     <!-- Toast Notification -->
     <div id="toast" class="toast"></div>
 
-    <script src="app.js"></script>
+    <script src="app.js?v=2"></script>
   </body>
 </html>
